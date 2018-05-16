@@ -74,6 +74,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a {
+  text-decoration: none;
+  color: #000000;
+}
 
 body {
   background: #f0f2f5;

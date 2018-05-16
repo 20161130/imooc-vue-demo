@@ -3,19 +3,16 @@
     <div class="index-left">
       <div class="index-left-block">
         <h2>全部产品</h2>
-        <h3>PC产品</h3>
-        <ul>
-          <li v-for="item in productList.game" :key="item.id">
-            <a :href="item.url">{{ item.name }}</a>
-          </li>
-        </ul>
-        <div class="hr"></div>
-        <h3>应用类</h3>
-        <ul>
-          <li v-for="item in productList.app" :key="item.id">
-            <a :href="item.url">{{ item.name }}</a>
-          </li>
-        </ul>
+        <template v-for="product in productList">
+          <h3 :key="product.id">{{ product.title }}</h3>
+          <ul :key="product.id">
+            <li v-for="item in product.list" :key="item.id">
+              <a :href="item.url">{{ item.name }}</a>
+              <span v-if="item.hot" class="hot-tag">HOT</span>
+            </li>
+          </ul>
+          <div v-if="!product.last" :key="product.id" class="hr"></div>
+        </template>
       </div>
       <div class="index-left-block">
         <h2>全部产品</h2>
@@ -52,19 +49,45 @@ export default {
         pc: {
           title: 'PC产品',
           list: [
-          {
-            title: '',
-            url: ''
-          },
+            {
+              name: '数据统计',
+              url: 'http://starcraft.com'
+            },
+            {
+              name: '数据预测',
+              url: 'http://warcraft.com'
+            },
+            {
+              name: '流量分析',
+              url: 'http://overwatch.com',
+              hot: true
+            },
+            {
+              name: '广告发布',
+              url: 'http://hearstone.com'
+            }
           ]
         },
         app: {
-          title: '应用类',
+          title: '手机应用类',
+          last: true,
           list: [
-          {
-            title: '',
-            url: ''
-          },
+            {
+              name: '91助手',
+              url: 'http://weixin.com'
+            },
+            {
+              name: '产品助手',
+              url: 'http://twitter.com'
+            },
+            {
+              name: '智能地图',
+              url: 'http://maps.com'
+            },
+            {
+              name: '团队语音',
+              url: 'http://phone.com'
+            }
           ]
         }
       }
@@ -94,6 +117,7 @@ export default {
 }
 .index-left-block .hr {
   margin-bottom: 20px;
+  border-top: 2px solid rgba(227,228,232);
 }
 .index-left-block h2 {
   background: #4fc08d;
@@ -148,5 +172,9 @@ export default {
 }
 .latest-news {
   min-height: 512px;
+}
+.hot-tag{
+  background-color: red;
+  color: #ffffff;
 }
 </style>
