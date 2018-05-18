@@ -16,7 +16,11 @@
       </div>
       <div class="index-left-block">
         <h2>全部产品</h2>
-        <h3>最新消息类</h3>
+        <ul>
+          <li v-for="item in newsList" :key="item.id">
+            <a :href="item.url" :key="item.id">{{  item.title }}</a>
+          </li>
+        </ul>
         <ul>
           <li v-for="item in productList.game" :key="item.id">
             <a :href="item.url">{{ item.name }}</a>
@@ -26,8 +30,9 @@
     </div>
     <div class="index-right">
       <slide-show :slides="slides"></slide-show>
+      <!-- <img src="../assets/slideShow/pic1.jpg" style="width: 900px;margin-bottom: 20px;"> -->
       <div class="index-board-list">
-        <div class="index-board-item" v-for="(item, index) in boardList" :class="['index-board-' + index, {'line-last': (index+1)%2 === 0}]"  :key="item.id">
+        <div class="index-board-item" v-for="(item, index) in boardList" :class="['index-board-' + item.id, {'line-last': (index+1)%2 === 0}]"  :key="item.id">
           <div class="index-board-item-inner">
             <h2>{{item.title}}</h2>
             <p>{{item.description}}</p>
@@ -42,55 +47,155 @@
 </template>
 
 <script>
+import { Carousel, Slide } from 'vue-carousel'
+import axios from 'axios'
+// eslint-disable-next-line
+import data from '../mock/mock'
 export default {
+  components: {
+    Carousel,
+    Slide
+  },
+  mounted () {
+    axios.get('api/getNewsList/')
+      .then((res) => {
+        console.log(res)
+        this.newsList = res.data.list
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    axios.get('api/getBoardList/')
+      .then((res) => {
+        console.log(res)
+        this.boardList = res.data.list
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    axios.get('api/getProductList/')
+      .then((res) => {
+        console.log(res)
+        this.productList = res.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   data () {
     return {
+      boardList: [
+        // {
+        //   title: '开放产品',
+        //   description: '开放产品是一款开放产品',
+        //   id: 'car',
+        //   saleout: false
+        // },
+        // {
+        //   title: '品牌营销',
+        //   description: '品牌营销帮助你的产品更好地找到定位',
+        //   id: 'earth',
+        //   saleout: false
+        // },
+        // {
+        //   title: '使命必达',
+        //   description: '使命必达快速迭代永远保持最前端的速度',
+        //   id: 'loud',
+        //   saleout: true
+        // },
+        // {
+        //   title: '勇攀高峰',
+        //   description: '帮你勇闯高峰，到达事业的顶峰',
+        //   id: 'mountain',
+        //   saleout: false
+        // }
+      ],
+      newsList: [
+        // {
+        //   title: '数据统计',
+        //   url: 'http://starcraft.com'
+        // },
+        // {
+        //   title: '数据预测',
+        //   url: 'http://warcraft.com'
+        // },
+        // {
+        //   title: '流量分析',
+        //   url: 'http://overwatch.com',
+        //   hot: true
+        // },
+        // {
+        //   title: '广告发布',
+        //   url: 'http://hearstone.com'
+        // }
+      ],
       productList: {
-        pc: {
-          title: 'PC产品',
-          list: [
-            {
-              name: '数据统计',
-              url: 'http://starcraft.com'
-            },
-            {
-              name: '数据预测',
-              url: 'http://warcraft.com'
-            },
-            {
-              name: '流量分析',
-              url: 'http://overwatch.com',
-              hot: true
-            },
-            {
-              name: '广告发布',
-              url: 'http://hearstone.com'
-            }
-          ]
-        },
-        app: {
-          title: '手机应用类',
-          last: true,
-          list: [
-            {
-              name: '91助手',
-              url: 'http://weixin.com'
-            },
-            {
-              name: '产品助手',
-              url: 'http://twitter.com'
-            },
-            {
-              name: '智能地图',
-              url: 'http://maps.com'
-            },
-            {
-              name: '团队语音',
-              url: 'http://phone.com'
-            }
-          ]
-        }
-      }
+        // pc: {
+        //   title: 'PC产品',
+        //   list: [
+        //     {
+        //       name: '数据统计',
+        //       url: 'http://starcraft.com'
+        //     },
+        //     {
+        //       name: '数据预测',
+        //       url: 'http://warcraft.com'
+        //     },
+        //     {
+        //       name: '流量分析',
+        //       url: 'http://overwatch.com',
+        //       hot: true
+        //     },
+        //     {
+        //       name: '广告发布',
+        //       url: 'http://hearstone.com'
+        //     }
+        //   ]
+        // },
+        // app: {
+        //   title: '手机应用类',
+        //   last: true,
+        //   list: [
+        //     {
+        //       name: '91助手',
+        //       url: 'http://weixin.com'
+        //     },
+        //     {
+        //       name: '产品助手',
+        //       url: 'http://twitter.com'
+        //     },
+        //     {
+        //       name: '智能地图',
+        //       url: 'http://maps.com'
+        //     },
+        //     {
+        //       name: '团队语音',
+        //       url: 'http://phone.com'
+        //     }
+        //   ]
+      },
+      slides: [
+        // {
+        //   src: require('../assets/slideShow/pic1.jpg'),
+        //   title: 'xxx1',
+        //   href: 'http://xxx.xxx.com'
+        // },
+        // {
+        //   src: require('../assets/slideShow/pic2.jpg'),
+        //   title: 'xxx2',
+        //   href: 'http://xxx.xxx.com'
+        // },
+        // {
+        //   src: require('../assets/slideShow/pic3.jpg'),
+        //   title: 'xxx3',
+        //   href: 'http://xxx.xxx.com'
+        // },
+        // {
+        //   src: require('../assets/slideShow/pic4.jpg'),
+        //   title: 'xxx4',
+        //   href: 'http://xxx.xxx.com'
+        // }
+      ]
     }
   }
 }
@@ -148,27 +253,43 @@ export default {
   margin-right: 20px;
   margin-bottom: 20px;
 }
-.index-bord-item-inner {
+.index-board-item-inner {
   min-height: 125px;
   padding-left: 120px;
 }
-.index-board-0 .index-board-item-inner {
+.index-board-item-inner h2 {
+  font-weight: bolder;
+  margin-bottom: 20px;
+}
+.index-board-car .index-board-item-inner {
   background: url(../assets/images/1.png) no-repeat;
+  background-size: 120px 120px;
 }
-.index-board-1 .index-board-item-inner {
+.index-board-earth .index-board-item-inner {
   background: url(../assets/images/2.png) no-repeat;
+  background-size: 120px 120px;
 }
-.index-board-2 .index-board-item-inner {
+.index-board-loud .index-board-item-inner {
   background: url(../assets/images/3.png) no-repeat;
+  background-size: 120px 120px;
 }
-.index-board-3 .index-board-item-inner {
+.index-board-mountain .index-board-item-inner {
   background: url(../assets/images/4.png) no-repeat;
+  background-size: 120px 120px;
 }
 .line-last {
   margin-right: 0;
 }
 .index-board-button {
   margin-top: 20px;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: #4fc08d;
+}
+.index-board-button a {
+  color: #fff;
 }
 .latest-news {
   min-height: 512px;
