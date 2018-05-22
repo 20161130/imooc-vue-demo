@@ -47,14 +47,13 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel'
+import slideShow from '../components/slideShow'
 import axios from 'axios'
 // eslint-disable-next-line
 import data from '../mock/mock'
 export default {
   components: {
-    Carousel,
-    Slide
+    slideShow
   },
   mounted () {
     axios.get('api/getNewsList/')
@@ -175,26 +174,26 @@ export default {
         //   ]
       },
       slides: [
-        // {
-        //   src: require('../assets/slideShow/pic1.jpg'),
-        //   title: 'xxx1',
-        //   href: 'http://xxx.xxx.com'
-        // },
-        // {
-        //   src: require('../assets/slideShow/pic2.jpg'),
-        //   title: 'xxx2',
-        //   href: 'http://xxx.xxx.com'
-        // },
-        // {
-        //   src: require('../assets/slideShow/pic3.jpg'),
-        //   title: 'xxx3',
-        //   href: 'http://xxx.xxx.com'
-        // },
-        // {
-        //   src: require('../assets/slideShow/pic4.jpg'),
-        //   title: 'xxx4',
-        //   href: 'http://xxx.xxx.com'
-        // }
+        {
+          src: require('../assets/slideShow/pic1.jpg'),
+          title: 'xxx1',
+          href: 'http://xxx.xxx.com'
+        },
+        {
+          src: require('../assets/slideShow/pic2.jpg'),
+          title: 'xxx2',
+          href: 'http://xxx.xxx.com'
+        },
+        {
+          src: require('../assets/slideShow/pic3.jpg'),
+          title: 'xxx3',
+          href: 'http://xxx.xxx.com'
+        },
+        {
+          src: require('../assets/slideShow/pic4.jpg'),
+          title: 'xxx4',
+          href: 'http://xxx.xxx.com'
+        }
       ]
     }
   }
