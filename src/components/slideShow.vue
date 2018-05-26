@@ -1,8 +1,13 @@
 <template>
-  <div class="slide-show">
+  <div class="slide-show" @mouseover="clearInv" @mouseout="runInv">
     <div class="slide-img">
       <a href="slides[nowIndex].href">
-        <img :src="slides[nowIndex].src">
+        <transition name="slide-trans">
+          <img v-if="isShow" :src="slides[nowIndex].src">
+        </transition>
+        <transition name="slide-trans-old">
+          <img v-if="!isShow" :src="slides[nowIndex].src">
+        </transition>
       </a>
     </div>
     <h2>{{ slides[nowIndex].title }}</h2>
@@ -21,11 +26,16 @@ export default {
   props: {
     slides: {
       type: Array
+    },
+    inv: {
+      type: Number,
+      default: 1000
     }
   },
   data () {
     return {
-      nowIndex: 1
+      nowIndex: 0,
+      isShow: true
     }
   },
   computed: {
@@ -46,11 +56,25 @@ export default {
   },
   methods: {
     goto (index) {
-      this.nowIndex = index
+      this.isShow = false
+      setTimeout(() => {
+        this.nowIndex = index
+        this.isShow = true
+        this.$emit('onchange', index)
+      }, 10)
+    },
+    runInv () {
+      this.invId = setInterval(() => {
+        this.goto(this.nextIndex)
+      }, this.inv)
+    },
+    clearInv () {
+      clearInterval(this.invId)
     }
   },
   mounted () {
     console.log(this.slides)
+    this.runInv()
   }
 }
 </script>
